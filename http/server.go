@@ -13,8 +13,10 @@ import (
 	"github.com/monirz/goserve"
 	"github.com/monirz/goserve/config"
 	"github.com/monirz/goserve/postgres"
+	"go.uber.org/zap"
 
 	"github.com/go-chi/chi"
+	_ "github.com/lib/pq"
 )
 
 type Server struct {
@@ -23,22 +25,24 @@ type Server struct {
 	Config *config.Config
 
 	UserService goserve.UserService
+
+	logger *zap.Logger
 }
 
-func NewServer() *Server {
+func NewServer(db *sql.DB) *Server {
 
-	// var err error
 	s := &Server{}
-	s.Config = config.NewConfig()
 
 	s.router = chi.NewRouter()
+	s.db = db
+	s.logger = zap.NewExample() //set zap.NewProduction() for production environments
 
 	s.router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
 
 	s.router.Route("/api/v1", func(r chi.Router) {
-
+		r.Post("/users", s.CreateUserHandler)
 	})
 
 	return s
