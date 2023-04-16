@@ -15,8 +15,19 @@ go mod tidy
 
 ```
 
+5. Run the test 
+
+```
+go test -v ./...
+
+```
+
 4. Run the application:
 ```
 go run cmd/server/main.go
 ```
+
+
+
+
 

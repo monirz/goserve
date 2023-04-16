@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/monirz/goserve/config"
-	"github.com/monirz/goserve/http"
+	"github.com/monirz/goserve/handlers"
 
 	"github.com/joho/godotenv"
 )
@@ -36,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	s := http.NewServer(db)
+	s := handlers.NewServer(db)
 	s.Config = cfg
 
 	s.Run()
